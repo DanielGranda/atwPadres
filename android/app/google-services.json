@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "124760226642",
+    "firebase_url": "https://antawaschool-977ae.firebaseio.com",
+    "project_id": "antawaschool-977ae",
+    "storage_bucket": "antawaschool-977ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:124760226642:android:06ccf11ac6dab261db588b",
+        "android_client_info": {
+          "package_name": "com.antawaschool.padres"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "124760226642-4divbkfeublsa2ab7kvji5426ptl02sn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA4hkOVCjTa_5meNp-7FGcNMfSe5-bdMpk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "124760226642-4divbkfeublsa2ab7kvji5426ptl02sn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "124760226642-acnuumqkfqbjeuhi22cm2j2akhtkvpnm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.antawaschool.padres"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
