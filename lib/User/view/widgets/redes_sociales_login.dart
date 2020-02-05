@@ -1,29 +1,39 @@
+//import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
+import 'package:padres/User/bloc/bloc_user.dart';
+import 'package:padres/User/model/user.dart';
 import 'package:padres/User/services/auth_services_firebase.dart';
 import 'package:padres/Utils/hexaColor.dart';
 import 'package:padres/Utils/socialIcons.dart';
 
 class RedesSocialesLogin extends StatefulWidget {
- const RedesSocialesLogin({@required this.auth});
-final AuthBase auth;
+  const RedesSocialesLogin({@required this.auth});
+  final AuthBase auth;
 
   @override
   _RedesSocialesLoginState createState() => _RedesSocialesLoginState();
 }
 
 class _RedesSocialesLoginState extends State<RedesSocialesLogin> {
-Future<void> _signInWithGoogle()async{
-  try {
-    await widget.auth.signInWithGoogle();
-  } catch (e) {
-    print(e.toString());
-  } 
-}
-
   @override
   Widget build(BuildContext context) {
-  //userBloc = BlocProvider.of(context);
+    final userBloc = BlocProvider.of<UserBloc>(context);
+    Future<void> _signInWithGoogle() async {
+      try {
+        await userBloc.signInWithGoogle().then((user) {
+          userBloc.updateUserData(UserPadre(
+            uid: user.uid,
+            email: user.email
+          ));
+        });
+      } catch (e) {
+        print(e.toString());
+      }
+    }
+
+    //userBloc = BlocProvider.of(context);
     Color colorField = Color(hexColor('#3A4A64'));
     return Column(
       children: <Widget>[
@@ -67,19 +77,15 @@ Future<void> _signInWithGoogle()async{
                iconData: FontAwesome.facebook_f,
                onPressed: () {},
              ), */
-            SocialIcon(
-              colors: [
-                Color(0xFFff4f38),
-                Color(0xFFff355d),
-              ],
-              iconData: FontAwesomeIcons.google,
-              onPressed: 
-                _signInWithGoogle
+            SocialIcon(colors: [
+              Color(0xFFff4f38),
+              Color(0xFFff355d),
+            ], iconData: FontAwesomeIcons.google, onPressed: _signInWithGoogle
                 //userBloc.signInGoogle();
 
                 //Navigator.pushNamed(context, '/');
-              
-            ),
+
+                ),
             /*  SocialIcon(
            colors: [
              Color(0xFF17ead9),

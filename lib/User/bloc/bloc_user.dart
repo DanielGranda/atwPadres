@@ -3,43 +3,38 @@ import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:padres/User/model/user.dart';
 import 'package:padres/User/repository/auth_repository.dart';
 import 'package:padres/User/repository/cloud_firestore_repository.dart';
+import 'package:padres/User/services/auth_services_firebase.dart';
 
 class UserBloc implements Bloc {
-final _auth_repository = AuthRepository();
+final _authRepositoryFirebase = AuthRepositoryFirebase();
 
-  //Flujo de datos - Streams
-  //Stream - Firebase
-  //StreamController
+  /////////////ESTADO DE USUARIO//////////
+ Stream<User> onAuthStateChanged() => _authRepositoryFirebase.onAuthStateChanged;
+ 
+ 
   Stream<FirebaseUser> streamFirebase = FirebaseAuth.instance.onAuthStateChanged;
   Stream<FirebaseUser> get authStatus => streamFirebase;
 
+  /////////////SIGN IN ANONYMOUS//////////
+  Future<User>signInAnonymously() => _authRepositoryFirebase.signInAnonymously();
+ 
+   /////////////SIGN IN GOOGLE//////////////
+   Future<User>signInWithGoogle() => _authRepositoryFirebase.signInWithGoogle();
 
- //Casos uso
-  //1. SignIn a la aplicación Google
-  Future<FirebaseUser> signInGoogle() {
-  return _auth_repository.signInFirebaseGoogle();
-  } 
-  //2. Sign Up User and Password
- /* Future<FirebaseUser> signInFirebaseWithUserAndPassword(String email, String password){
-    return _auth_repository.signInWithUserAndPassword(email, password);
-  }  
- */
+  /////////////SIGN UP PASSOORD//////////
+  Future<User>registroWithPasswordAndEmail(String email, String password) =>
+      _authRepositoryFirebase.registroWithPasswordAndEmail(email, password);
 
+  /////////////SIGN IN PASSWORD//////////
+  Future<User>signInWithPasswordAndEmail(String email, String password) =>
+      _authRepositoryFirebase.signInWithPasswordAndEmail(email, password);
 
+  /////////////SIGN OUT GOOGLE//////////
+   Future<void>signOut() => _authRepositoryFirebase.signOut();
 
- Future signUpHttpUser(String email, String password){
-  return _auth_repository.signUpHttp(email, password);
-  }  
-
-
-  //3.SignOut
-  signOut(){
-_auth_repository.signOut();
-  }
-
-  //Caso registrar usuario en base de datos
+ /////////////REGISTRO BASDE DE DATOS USER//////////
   final _cloudFirestoreRepository = CloudFirestoreRepository();
-  updateUserData(User user)=> _cloudFirestoreRepository.updateUserDataFirestore(user);
+  updateUserData(UserPadre user)=> _cloudFirestoreRepository.updateUserDataFirestore(user);
 
   @override
   void dispose() {}

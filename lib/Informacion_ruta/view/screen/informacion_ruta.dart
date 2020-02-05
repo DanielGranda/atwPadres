@@ -25,7 +25,7 @@ class _InformacionRutasState extends State<InformacionRutas>
         lowerBoundValue: AnimationControllerValue(pixel: 50),
         upperBoundValue: AnimationControllerValue(percentage: 0.8),
         springDescription: SpringDescription.withDampingRatio(
-            mass: 1, stiffness: Stiffness.VERY_LOW, ratio: _dampingValue),
+            mass: 1, stiffness: Stiffness.MEDIUM, ratio: _dampingValue),
         duration: Duration(milliseconds: 300));
     super.initState();
   }
@@ -37,6 +37,7 @@ class _InformacionRutasState extends State<InformacionRutas>
         Expanded(
           child: Container(
             child: RubberBottomSheet(
+               onTap: () {},
               lowerLayer: _getLowerLayer(),
               upperLayer: _getUpperLayer(),
               animationController: _controller,

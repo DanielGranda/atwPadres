@@ -1,8 +1,8 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:padres/User/services/auth_services_firebase.dart';
+
 import 'package:padres/Utils/hexaColor.dart';
-import 'package:provider/provider.dart';
+
 
 class MenuLateral extends StatefulWidget {
   @override
@@ -12,6 +12,7 @@ class MenuLateral extends StatefulWidget {
 class _MenuLateralState extends State<MenuLateral> {
   @override
   Widget build(BuildContext context) {
+    //  final userBloc = BlocProvider.of<UserBloc>(context);
     return SafeArea(
       child: Container(
         width: 270,
@@ -136,12 +137,14 @@ class _MenuLateralState extends State<MenuLateral> {
                       btnOkText: 'Aceptar',
                       btnCancelColor: Color(hexColor('#E86A87')),
                       btnOkOnPress: () async {
-                        final auth = Provider.of<AuthBase>(context, listen: false);
-                        try {
-                          await auth.signOut();
+                           Navigator.popAndPushNamed(context, 'ingreso');
+                      
+                     /*    try {
+                          await userBloc.signOut();
+                          Navigator.pop(context);
                         } catch (e) {
                           print(e.toString());
-                        }
+                        } */
                       },
                       btnCancelText: 'Cancelar',
                       btnCancelOnPress: () {

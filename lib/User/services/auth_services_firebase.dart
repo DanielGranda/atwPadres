@@ -3,32 +3,36 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class User {
-  User({@required this.uid});
+  User( {@required this.uid, @required this.email,});
   final String uid;
+  final String email;
+  
 }
 
 abstract class AuthBase {
   Stream<User> get onAuthStateChanged;
   Future<User> currentUser();
   Future<User> signInAnonymously();
-  Future<User> signInWithGoogle();  
-   Future<User> createUserWithEmailAndPassword(
-      String email, String password);
-       Future<User> signInWithEmailAndPassword(
-      String email, String password);
+  Future<User> signInWithGoogle();
+  Future<User> createUserWithEmailAndPassword(String email, String password);
+  Future<User> signInWithEmailAndPassword(String email, String password);
   Future<void> signOut();
 }
 
-class Auth implements AuthBase {
+class AuthServiceFirebaseApi implements AuthBase {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
   User _userFromFirebase(FirebaseUser user) {
     if (user == null) {
       return null;
     }
-    return User(uid: user.uid);
+    return User(
+      uid: user.uid, 
+      email : user.email);
   }
 
   @override
@@ -48,7 +52,7 @@ class Auth implements AuthBase {
     return _userFromFirebase(authResult.user);
   }
 
-   @override
+  @override
   Future<User> signInWithGoogle() async {
     final GoogleSignIn googleSignIn = GoogleSignIn();
     final GoogleSignInAccount googleUser = await googleSignIn.signIn();
@@ -75,14 +79,14 @@ class Auth implements AuthBase {
     }
   }
 
-   @override
+  @override
   Future<User> signInWithEmailAndPassword(String email, String password) async {
     final AuthResult authResult = await _firebaseAuth
         .signInWithCredential(EmailAuthProvider.getCredential(
       email: email,
       password: password,
     ));
-       print('Usuario ingresado con: ${authResult.user.email}');
+    print('Usuario ingresado con: ${authResult.user.email}');
     return _userFromFirebase(authResult.user);
   }
 
@@ -91,11 +95,9 @@ class Auth implements AuthBase {
       String email, String password) async {
     final AuthResult authResult = await _firebaseAuth
         .createUserWithEmailAndPassword(email: email, password: password);
-         print('Usuario creado con: ${authResult.user.email}');
+    print('Usuario creado con: ${authResult.user.email}');
     return _userFromFirebase(authResult.user);
   }
-
-
 
   @override
   Future<void> signOut() async {
@@ -103,5 +105,23 @@ class Auth implements AuthBase {
     await googleSignIn.signOut();
     await _firebaseAuth.signOut();
     print('Sesión Cerrada desde clase ');
+  }
+
+  //Sign Up User and Password with post
+  final String _firebaseToken = 'AIzaSyB69hfiRWrtOMRN9IzM74EDPUXU3hqJmXI';
+
+  Future nuevoUsuario(String email, String password) async {
+    final authData = {
+      'email': email,
+      'password': password,
+      'token': true,
+    };
+
+    final resp = await http.post(
+        'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=$_firebaseToken',
+        body: json.encode(authData));
+
+    Map<String, dynamic> decodeResp = json.decode(resp.body);
+    print(decodeResp);
   }
 }

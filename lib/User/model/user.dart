@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
-class User {
-  User(
+class UserPadre {
+  UserPadre(
       {@required this.uid,
-      @required this.nombres,
-      @required this.apellido,
-      @required this.cedula,
-      @required this.photoUrl});
+ this.nombres,
+      this.email,
+       this.photoUrl});
 
   final String uid;
   final String nombres;
-  final String apellido;
-  final String cedula;
+  final String email;
   final String photoUrl;
 }

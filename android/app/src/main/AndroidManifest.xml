@@ -7,7 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <application android:name="io.flutter.app.FlutterApplication" android:label="Antawa Padres" android:icon="@mipmap/launcher_icon">
-        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyB5h1xYMFycHMu-SDr-rhRX5lzy-YLyh9g" />
+        <meta-data android:name="com.google.android.geo.API_KEY" android:value="AIzaSyCP5d1bT-i0lbb0xv9Allk0TgwZ-B7mNX4" />
         <activity android:name=".MainActivity" android:launchMode="singleTop" android:theme="@style/LaunchTheme" android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode" android:hardwareAccelerated="true" android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

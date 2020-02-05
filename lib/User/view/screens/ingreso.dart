@@ -6,9 +6,7 @@ import 'package:padres/User/view/widgets/boton_ingreso.dart';
 import 'package:padres/User/view/widgets/cabecera_ingreso.dart';
 import 'package:padres/User/view/widgets/fondoRegistro.dart';
 import 'package:padres/User/view/widgets/formulario_ingreso.dart';
-import 'package:padres/User/view/widgets/informacion_service.dart';
 import 'package:padres/User/view/widgets/pie_ingreso.dart';
-import 'package:padres/User/view/widgets/redes_sociales_login.dart';
 
 class IngresoAtwPadres extends StatefulWidget {
   IngresoAtwPadres({Key key, AuthBase auth, onSignIn}) : super(key: key);
@@ -52,9 +50,9 @@ class _IngresoAtwPadresState extends State<IngresoAtwPadres> {
                           BotonIngreso(
                             ingresoPadresKey: _ingresoPadresKey,
                           ),
-                          Expanded(
-                            child: Informacion(auth: Auth()),
-                          ),
+                    /*       Expanded(
+                            child: Informacion(auth: AuthServiceFirebaseApi()),
+                          ), */
                         ],
                       ),
                       SizedBox(
@@ -65,9 +63,9 @@ class _IngresoAtwPadresState extends State<IngresoAtwPadres> {
                       SizedBox(
                         height: 30,
                       ),
-                      RedesSocialesLogin(
-                        auth: Auth(),
-                      ),
+              /*         RedesSocialesLogin(
+                        auth: AuthServiceFirebaseApi(),
+                      ), */
                       SizedBox(
                         height: 200,
                       ),

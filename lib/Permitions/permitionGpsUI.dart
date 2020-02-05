@@ -40,7 +40,7 @@ class _PermitionGpsUiState extends State<PermitionGpsUi>
     final status = await _permissionHandler
         .checkPermissionStatus(PermissionGroup.locationWhenInUse);
     if (status == PermissionStatus.granted) {
-      Navigator.pushReplacementNamed(context, '/');
+      Navigator.pushReplacementNamed(context, 'homePadres');
     } else {
       setState(() {
         _isChecking = false;
@@ -54,7 +54,7 @@ class _PermitionGpsUiState extends State<PermitionGpsUi>
     if (result.containsKey(PermissionGroup.locationWhenInUse)) {
       final status = result[PermissionGroup.locationWhenInUse];
       if (status == PermissionStatus.granted) {
-        Navigator.pushReplacementNamed(context, '/');
+        Navigator.pushReplacementNamed(context, 'homePadres');
       } else if (status == PermissionStatus.denied) {
         final result = await _permissionHandler.openAppSettings();
         print('result $result');

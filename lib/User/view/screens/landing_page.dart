@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:generic_bloc_provider/generic_bloc_provider.dart';
 import 'package:padres/Home_maps/view/screens/homeAtwPadres.dart';
+import 'package:padres/User/bloc/bloc_user.dart';
 import 'package:padres/User/services/auth_services_firebase.dart';
-import 'package:provider/provider.dart';
 
 import 'ingreso.dart';
 
 class LandingPage extends StatelessWidget {
-
-  
   @override
   Widget build(BuildContext context) {
-    final auth = Provider.of<AuthBase>(context, listen: false);
-    return StreamBuilder<User>(
-      stream: auth.onAuthStateChanged,
+    final userBloc = BlocProvider.of<UserBloc>(context);
+    //bool loading = false;
+    return StreamBuilder(
+      stream: userBloc.onAuthStateChanged(),
       builder: (BuildContext context, AsyncSnapshot<User> snapshot) {
-        if (snapshot.connectionState==ConnectionState.active) {
+        if (snapshot.connectionState == ConnectionState.active) {
           final User user = snapshot.data;
-          if (user == null) {
-            return IngresoAtwPadres(
-            );
+
+          if (user ==  null) {
+            return   
+            IngresoAtwPadres();
           }
-          print('Sesión iniciada con:$auth');
-          return HomeAtwPadres(
-          );
+          print('Sesión iniciada con:$user');
+          return HomeAtwPadres();
         } else {
           return Scaffold(
             body: Center(child: CircularProgressIndicator()),

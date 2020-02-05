@@ -19,7 +19,8 @@ import 'package:padres/Utils/hexaColor.dart';
 import 'package:padres/Utils/stylesMaps.dart';
 
 class HomeAtwPadres extends StatefulWidget {
-  HomeAtwPadres({Key key, this.title,  void Function() onSignOut}) : super(key: key);
+  HomeAtwPadres({Key key, this.title, void Function() onSignOut})
+      : super(key: key);
   final String title;
 
   @override
@@ -75,27 +76,27 @@ class _HomeAtwPadresState extends State<HomeAtwPadres> {
   @override
   void initState() {
     super.initState();
-     _loadCarPin();
+    _loadCarPin();
     SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle.light);
 
     _navigationController = new CircularBottomNavigationController(selectedPos);
   }
+
   GoogleMapController _mapController;
   Uint8List _carPin;
   Marker _myMarker;
-   StreamSubscription<Position> _positionStream;
+  StreamSubscription<Position> _positionStream;
   Map<MarkerId, Marker> _markers = Map();
   Map<PolylineId, Polyline> _polylines = Map();
   List<LatLng> _myRoute = List();
   Position _lastPosition;
-  
-  
+
   final CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
   );
 
-   _loadCarPin() async {
+  _loadCarPin() async {
     final byteData = await rootBundle.load('assets/icon/busAtw.png');
     _carPin = byteData.buffer.asUint8List();
 
@@ -166,24 +167,24 @@ class _HomeAtwPadresState extends State<HomeAtwPadres> {
       _positionStream.cancel();
       _positionStream = null;
     }
-        _navigationController.dispose();
+    _navigationController.dispose();
     super.dispose();
   }
-  
-   _moveMarkerMap(Position position) {
+
+  _moveMarkerMap(Position position) {
     try {
-        final cameraUpdate =
-        CameraUpdate.newLatLng(LatLng(position.latitude, position.longitude));
-    _mapController.animateCamera(cameraUpdate);
+      final cameraUpdate =
+          CameraUpdate.newLatLng(LatLng(position.latitude, position.longitude));
+      _mapController.animateCamera(cameraUpdate);
     } catch (e) {
       print(e.toString());
     }
-  } 
+  }
 
- _updateMarkerPosition(MarkerId markerId, LatLng p) {
+  _updateMarkerPosition(MarkerId markerId, LatLng p) {
     print("newPosition");
     _markers[markerId] = _markers[markerId].copyWith(positionParam: p);
-  } 
+  }
 
   _onTapMArker(LatLng p) {
     final id = "${_markers.length}";
@@ -226,7 +227,7 @@ class _HomeAtwPadresState extends State<HomeAtwPadres> {
                     icon: Icon(Icons.call),
                     onPressed: () {},
                   ),
-                /*   IconButton(
+                  /*   IconButton(
                     icon: Icon(Icons.message),
                     onPressed: () {},
                   ) */
@@ -237,29 +238,26 @@ class _HomeAtwPadresState extends State<HomeAtwPadres> {
         });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: 
-      MenuLateral(),
-      
-      //menuLateral(),
+      drawer: MenuLateral(),
       appBar: cabecera(),
       body: Stack(
         children: <Widget>[
-   /*  GoogleMap(
-        initialCameraPosition: _kGooglePlex,
-        myLocationButtonEnabled: true,
-        myLocationEnabled: true,
-        markers: Set.of(_markers.values),
-        polylines: Set.of(_polylines.values),
-        onTap: _onTapMArker,
-        onMapCreated: (GoogleMapController controller) {
-          _mapController = controller;
-          _mapController.setMapStyle(jsonEncode(mapStyle4)); /* Escoger 1-2-3 */
-        },
-      ), */
+          GoogleMap(
+            initialCameraPosition: _kGooglePlex,
+            myLocationButtonEnabled: true,
+            myLocationEnabled: true,
+            markers: Set.of(_markers.values),
+            polylines: Set.of(_polylines.values),
+            onTap: _onTapMArker,
+            onMapCreated: (GoogleMapController controller) {
+              _mapController = controller;
+              _mapController
+                  .setMapStyle(jsonEncode(mapStyle4)); /* Escoger 1-2-3 */
+            },
+          ),
           Padding(
             child: bodyContainer(),
             padding: EdgeInsets.only(bottom: bottomNavBarHeight),
@@ -355,6 +353,4 @@ class _HomeAtwPadresState extends State<HomeAtwPadres> {
       },
     );
   }
-
 }
-

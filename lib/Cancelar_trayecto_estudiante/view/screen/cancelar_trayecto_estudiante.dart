@@ -8,14 +8,15 @@ class CancelarTrayectoEstudiante extends StatefulWidget {
   CancelarTrayectoEstudiante({Key key}) : super(key: key);
 
   @override
-  _CancelarTrayectoEstudianteState createState() => _CancelarTrayectoEstudianteState();
+  _CancelarTrayectoEstudianteState createState() =>
+      _CancelarTrayectoEstudianteState();
 }
 
 class _CancelarTrayectoEstudianteState extends State<CancelarTrayectoEstudiante>
     with SingleTickerProviderStateMixin {
   RubberAnimationController _controller;
 
-  double _dampingValue = DampingRatio.HIGH_BOUNCY;
+  double _dampingValue = DampingRatio.NO_BOUNCY;
   //double _stiffnessValue = Stiffness.HIGH;
 
   @override
@@ -30,7 +31,9 @@ class _CancelarTrayectoEstudianteState extends State<CancelarTrayectoEstudiante>
         duration: Duration(milliseconds: 300));
     super.initState();
   }
-  final GlobalKey<FormBuilderState> _misHijosNoVaKey = GlobalKey<FormBuilderState>();
+
+  final GlobalKey<FormBuilderState> _misHijosNoVaKey =
+      GlobalKey<FormBuilderState>();
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -38,6 +41,7 @@ class _CancelarTrayectoEstudianteState extends State<CancelarTrayectoEstudiante>
         Expanded(
           child: Container(
             child: RubberBottomSheet(
+              onTap: () {},
               lowerLayer: _getLowerLayer(),
               upperLayer: _getUpperLayer(),
               animationController: _controller,
@@ -125,11 +129,13 @@ class _CancelarTrayectoEstudianteState extends State<CancelarTrayectoEstudiante>
                                 child: Column(
                                   children: <Widget>[
                                     Container(
-                                        width: double.infinity,
-                    padding: EdgeInsets.all(15),
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.grey),
-                        borderRadius: BorderRadius.circular(25)),
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(15),
+                                      decoration: BoxDecoration(
+                                          border:
+                                              Border.all(color: Colors.grey),
+                                          borderRadius:
+                                              BorderRadius.circular(25)),
                                       child: FormBuilderDropdown(
                                         attribute: "hijonova",
                                         decoration: InputDecoration(
@@ -168,124 +174,147 @@ class _CancelarTrayectoEstudianteState extends State<CancelarTrayectoEstudiante>
                                             .map((destinatario) =>
                                                 DropdownMenuItem(
                                                     value: destinatario,
-                                                    child: Text("$destinatario")))
+                                                    child:
+                                                        Text("$destinatario")))
                                             .toList(),
                                         allowClear: true,
                                       ),
                                     ),
-                                    Divider(),
-                                       FormBuilderDateTimePicker(
-                                  attribute: "fecha_no_va",
-                                  inputType: InputType.date,
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      color: Color(hexColor('#61B4E5'))),
-                                  //format: DateTime(),
-                                  decoration: InputDecoration(
-                                    suffixIcon: Icon(
-                                      Icons.date_range,
-                                      color: Color(hexColor('#61B4E5')),
-                                    ),
-                                    border: OutlineInputBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(20)),
-                                    labelText: "Día que no asistirá",
-                                    labelStyle: TextStyle(
-                                        fontSize: 14,
-                                        color: Color(hexColor('#3A4A64'))),
-                                  ),
-                                  validators: [
+                                    SizedBox(height: 10),
+                                    FormBuilderDateTimePicker(
+                                      locale: Locale('es', 'ES'),
+
+                                      attribute: "fechaNoAsistencia",
+                                      inputType: InputType.date,
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          color: Color(hexColor('#5CC4B8'))),
+                                      //format: DateTime(),
+                                      decoration: InputDecoration(
+                                        suffixIcon: Icon(
+                                          Icons.date_range,
+                                          color: Color(hexColor('#5CC4B8')),
+                                        ),
+                                        border: OutlineInputBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(20)),
+                                        labelText: "Día que no asistirá",
+                                        labelStyle: TextStyle(
+                                            fontSize: 14,
+                                            color: Color(hexColor('#3A4A64'))),
+                                      ),
+                                      validators: [
                                         FormBuilderValidators.required(
                                             errorText: 'Campo Obligatorio')
                                       ],
-                                ),
+                                    ),
                                     SizedBox(
-                        height: 20,
-                      ),
-                                     //Botonoes
-  Column(
-                    children: <Widget>[
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          //Expanded(child: SizedBox()),
-                          FlatButton(
-                            onPressed: () {
-                              if (_misHijosNoVaKey.currentState.saveAndValidate()) {
-                                print(
-                                  _misHijosNoVaKey.currentState.value,
-                                );
-                                AwesomeDialog(
-                                    btnOkColor: Color(hexColor('#5CC4B8')),
-                                    context: context,
-                                    dialogType: DialogType.SUCCES,
-                                    animType: AnimType.TOPSLIDE,
-                                    tittle: 'Registro Exitoso',
-                                    desc: 'Su queja ha sido enviada con éxito',
-                                    //btnCancelOnPress: () {},
-                                    btnOkOnPress: () {
-                                      Navigator.pushNamed(context, '/');
-                                    }).show();
-                              } else {
-                                print('campos por validar');
-                                AwesomeDialog(
-                                    btnOkColor: Color(hexColor('#E86A87')),
-                                    context: context,
-                                    dialogType: DialogType.ERROR,
-                                    animType: AnimType.TOPSLIDE,
-                                    tittle: 'Error de Registro ',
-                                    desc: 'Revise campos obligatorios',
-                                    //btnCancelOnPress: () {},
-                                    btnOkOnPress: () {
-                                      //Navigator.pushNamed(context, '/');
-                                    }).show();
-                              }
-                            },
-                            child: Column(
-                              children: <Widget>[
-                                CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage:
-                                      AssetImage('assets/icon/ok.png'),
-                                ),
-                                Text("Enviar"),
-                              ],
-                            ),
-                          ),
-                          FlatButton(
-                            child: Column(
-                              children: <Widget>[
-                                CircleAvatar(
-                                  backgroundColor: Colors.transparent,
-                                  backgroundImage:
-                                      AssetImage('assets/icon/cancel.png'),
-                                ),
-                                Text("Cancelar"),
-                              ],
-                            ),
-                            onPressed: () {
-                              Navigator.pushNamed(context, '/');
-                              //_fase1Key.currentState.reset();
-                            },
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: 40,
-                      ),
-                    ],
-                  )
+                                      height: 20,
+                                    ),
+                                    //Botonoes
+                                    Column(
+                                      children: <Widget>[
+                                        Row(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.center,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            //Expanded(child: SizedBox()),
+                                            FlatButton(
+                                              onPressed: () {
+                                                if (_misHijosNoVaKey
+                                                    .currentState
+                                                    .saveAndValidate()) {
+                                                  print(
+                                                    _misHijosNoVaKey
+                                                        .currentState.value,
+                                                  );
+                                                  AwesomeDialog(
+                                                      btnOkColor: Color(
+                                                          hexColor('#5CC4B8')),
+                                                      context: context,
+                                                      dialogType:
+                                                          DialogType.SUCCES,
+                                                      animType:
+                                                          AnimType.TOPSLIDE,
+                                                      tittle:
+                                                          'Registro Exitoso',
+                                                      desc:
+                                                          'Su notificación ha sido enviada con éxito',
+                                                      //btnCancelOnPress: () {},
+                                                      btnOkOnPress: () {
+                                                        Navigator.pushNamed(
+                                                            context, 'homePadres');
+                                                      }).show();
+                                                } else {
+                                                  print('campos por validar');
+                                                  AwesomeDialog(
+                                                          btnOkColor: Color(
+                                                              hexColor(
+                                                                  '#E86A87')),
+                                                          context: context,
+                                                          dialogType:
+                                                              DialogType.ERROR,
+                                                          animType:
+                                                              AnimType.TOPSLIDE,
+                                                          tittle:
+                                                              'Error de Registro ',
+                                                          desc:
+                                                              'Revise campos obligatorios',
+                                                          //btnCancelOnPress: () {},
+                                                          btnOkOnPress: () {
+                                                            //Navigator.pushNamed(context, '/');
+                                                          })
+                                                      .show();
+                                                }
+                                              },
+                                              child: Column(
+                                                children: <Widget>[
+                                                  CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    backgroundImage: AssetImage(
+                                                        'assets/icon/ok.png'),
+                                                  ),
+                                                  Text("Enviar"),
+                                                ],
+                                              ),
+                                            ),
+                                            FlatButton(
+                                              child: Column(
+                                                children: <Widget>[
+                                                  CircleAvatar(
+                                                    backgroundColor:
+                                                        Colors.transparent,
+                                                    backgroundImage: AssetImage(
+                                                        'assets/icon/cancel.png'),
+                                                  ),
+                                                  Text("Cancelar"),
+                                                ],
+                                              ),
+                                              onPressed: () {
+                                                Navigator.popAndPushNamed(
+                                                    context, 'homePadres');
+                                                //_fase1Key.currentState.reset();
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 40,
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 )),
                           )),
                     ),
                   ),
-                 
                 ],
               ),
             )
- 
+
             /*     SingleChildScrollView(
                   child: Column(
             children: <Widget>[
@@ -301,5 +330,4 @@ class _CancelarTrayectoEstudianteState extends State<CancelarTrayectoEstudiante>
   }
 }
 
-class DateFormat {
-}
+class DateFormat {}

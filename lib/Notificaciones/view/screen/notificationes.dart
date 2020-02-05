@@ -36,6 +36,7 @@ class _NotificationesState extends State<Notificationes>
           Expanded(
             child: Container(
               child: RubberBottomSheet(
+                 onTap: () {},
                 lowerLayer: _getLowerLayer(),
                 upperLayer: _getUpperLayer(),
                 animationController: _controller,

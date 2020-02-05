@@ -1,16 +1,12 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:padres/User/services/auth_services_firebase.dart';
 import 'package:padres/Utils/hexaColor.dart';
-import 'package:provider/provider.dart';
 
 class BotonRegistro extends StatefulWidget {
   const BotonRegistro({
     Key key,
     GlobalKey<FormBuilderState> registroPadresKey,
-  
   })  : _registroPadresUiKey = registroPadresKey,
         super(key: key);
   final GlobalKey<FormBuilderState> _registroPadresUiKey;
@@ -20,35 +16,61 @@ class BotonRegistro extends StatefulWidget {
 }
 
 class _BotonRegistroState extends State<BotonRegistro> {
-
   @override
   Widget build(BuildContext context) {
+    //final userBloc = BlocProvider.of<UserBloc>(context);
     void _sumitingreso() async {
-      final auth = Provider.of<AuthBase>(context, listen: false);
-      try {
-        widget._registroPadresUiKey.currentState.saveAndValidate();
+      if (widget._registroPadresUiKey.currentState.saveAndValidate()) {
         print(
           widget._registroPadresUiKey.currentState.value,
         );
-
-        await auth.createUserWithEmailAndPassword(
-            widget._registroPadresUiKey.currentState.value['email'],
-            widget._registroPadresUiKey.currentState.value['Password']);
-            Navigator.of(context).pop();
-      }  on PlatformException  catch (e) {
-         AwesomeDialog(
-        btnOkColor: Color(hexColor('#F6C34F')),
-        context: context,
-        dialogType: DialogType.ERROR,
-        animType: AnimType.TOPSLIDE,
-        tittle: 'Verificación',
-        desc:
-            e.message,
-        btnCancelText: 'Aceptar',
-        btnCancelOnPress: () {
-        }).show();
+        AwesomeDialog(
+            btnOkColor: Color(hexColor('#5CC4B8')),
+            context: context,
+            dialogType: DialogType.SUCCES,
+            animType: AnimType.TOPSLIDE,
+            tittle: 'Verificación',
+            desc: 'Registro Exitoso',
+              btnOkText: 'Aceptar',
+           btnOkOnPress: () {
+              Navigator.popAndPushNamed(context, 'homePadres');
+            }).show();
+      } else {
+        AwesomeDialog(
+                btnCancelColor: Color(hexColor('#E86A87')),
+                context: context,
+                dialogType: DialogType.ERROR,
+                animType: AnimType.TOPSLIDE,
+                tittle: 'Verificación',
+                desc: 'Verifique los datos para el registro',
+                btnCancelText: 'Aceptar',
+                btnCancelOnPress: () {})
+            .show();
       }
-     // Navigator.pushReplacementNamed(context, 'inicio');
+      /*    try {
+
+/*         await userBloc.registroWithPasswordAndEmail(
+            widget._registroPadresUiKey.currentState.value['email'],
+            widget._registroPadresUiKey.currentState.value['Password']).then((user) {
+          userBloc.updateUserData(UserPadre(
+            uid: user.uid,
+            email: user.email
+          ));
+        });
+            Navigator.of(context).pop(); */
+      } on PlatformException catch (e) {
+        AwesomeDialog(
+                btnOkColor: Color(hexColor('#F6C34F')),
+                context: context,
+                dialogType: DialogType.ERROR,
+                animType: AnimType.TOPSLIDE,
+                tittle: 'Verificación',
+                desc: e.message,
+                btnCancelText: 'Aceptar',
+                btnCancelOnPress: () {})
+            .show();
+      } */
+      // Navigator.pushReplacementNamed(context, 'inicio');
     }
 
     return InkWell(

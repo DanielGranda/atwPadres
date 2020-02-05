@@ -1,4 +1,5 @@
 import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:conditional_builder/conditional_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:padres/Utils/hexaColor.dart';
@@ -11,8 +12,7 @@ class Quejas extends StatefulWidget {
   _QuejasState createState() => _QuejasState();
 }
 
-class _QuejasState extends State<Quejas>
-    with SingleTickerProviderStateMixin {
+class _QuejasState extends State<Quejas> with SingleTickerProviderStateMixin {
   RubberAnimationController _controller;
 
   double _dampingValue = DampingRatio.MEDIUM_BOUNCY;
@@ -32,6 +32,7 @@ class _QuejasState extends State<Quejas>
   }
 
   final GlobalKey<FormBuilderState> _quejasKey = GlobalKey<FormBuilderState>();
+  String destinatarioQueja;
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -39,6 +40,7 @@ class _QuejasState extends State<Quejas>
         Expanded(
           child: Container(
             child: RubberBottomSheet(
+              onTap: () {},
               lowerLayer: _getLowerLayer(),
               upperLayer: _getUpperLayer(),
               animationController: _controller,
@@ -118,114 +120,254 @@ class _QuejasState extends State<Quejas>
                                 autovalidate: true,
                                 child: Column(
                                   children: <Widget>[
-                                    FormBuilderDropdown(
-                                      attribute: "destinatario",
-                                      decoration: InputDecoration(
-                                        labelText: "Destinatario de su queja",
-                                        labelStyle: TextStyle(
-                                          fontFamily: 'Poppins-Medium',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          color: Color(hexColor('#3A4A64')),
-                                        ),
-                                      ),
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        color: Color(hexColor('#5CC4B8')),
-                                      ),
-                                      // initialValue: 'Male',
-                                      hint: Text(
-                                        '¿A quién dirige su queja?',
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins-Medium',
-                                          fontSize: 12,
-                                          color: Color(hexColor('#5CC4B8')),
-                                        ),
-                                      ),
-                                      validators: [
-                                        FormBuilderValidators.required(
-                                            errorText: 'Campo Obligatorio')
-                                      ],
-                                      items: [
-                                        'Recorrido',
-                                        'Unidad Educativa',
-                                        'Aplicación'
-                                      ]
-                                          .map((destinatario) =>
-                                              DropdownMenuItem(
-                                                  value: destinatario,
-                                                  child: Text("$destinatario")))
-                                          .toList(),
-                                      allowClear: true,
-                                    ),
-                                    Divider(),
-                                    FormBuilderDropdown(
-                                      attribute: "motivo",
-                                      decoration: InputDecoration(
-                                        labelText: "Motivo de su queja",
-                                        labelStyle: TextStyle(
-                                          fontFamily: 'Poppins-Medium',
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 18,
-                                          color: Color(hexColor('#3A4A64')),
-                                        ),
-                                      ),
-                                      style: TextStyle(
-                                        fontFamily: 'Poppins-Medium',
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 14,
-                                        color: Color(hexColor('#5CC4B8')),
-                                      ),
-                                      // initialValue: 'Male',
-                                      hint: Text(
-                                        '¿Seleccione el motivo de su queja?',
-                                        style: TextStyle(
-                                          fontFamily: 'Poppins-Medium',
-                                          fontSize: 12,
-                                          color: Color(hexColor('#5CC4B8')),
-                                        ),
-                                      ),
-                                      validators: [
-                                        FormBuilderValidators.required(
-                                            errorText: 'Campo Obligatorio')
-                                      ],
-                                      items: ['q', 'b', 'c']
-                                          .map((motivo) => DropdownMenuItem(
-                                              value: motivo,
-                                              child: Text("$motivo")))
-                                          .toList(),
-                                      allowClear: true,
-                                    ),
-                                    Divider(),
-                                    FormBuilderTextField(
-                                      attribute: "detalle",
-                                      decoration: InputDecoration(
-                                          border: OutlineInputBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20)),
-                                          labelText: "Detalle de queja",
+                                    Padding(
+                                      padding: const EdgeInsets.all(14.0),
+                                      child: FormBuilderDropdown(
+                                        attribute: "destinatario",
+                                        decoration: InputDecoration(
+                                          labelText: "Destinatario de su queja",
                                           labelStyle: TextStyle(
-                                              fontSize: 14,
-                                              color:
-                                                  Color(hexColor('#3A4A64'))),
-                                          helperStyle: TextStyle(
-                                              fontSize: 12,
-                                              color:
-                                                  Color(hexColor('#61B4E5'))),
-                                          hintText:
-                                              'Ingrese el detalle de su queja'),
-                                      style: TextStyle(
-                                          fontSize: 14,
-                                          color: Color(hexColor('#61B4E5'))),
-                                      validators: [
-                                        FormBuilderValidators.required(
-                                          errorText: 'Requerido',
+                                            fontFamily: 'Poppins-Medium',
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18,
+                                            color: Color(hexColor('#3A4A64')),
+                                          ),
                                         ),
-                                        FormBuilderValidators.maxLength(50,
-                                            errorText: 'Máximo 50 caracteres')
-                                      ],
+                                        style: TextStyle(
+                                          fontFamily: 'Poppins-Medium',
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 16,
+                                          color: Color(hexColor('#5CC4B8')),
+                                        ),
+                                        // initialValue: 'Male',
+                                        hint: Text(
+                                          '¿A quién dirige su queja?',
+                                          style: TextStyle(
+                                            fontFamily: 'Poppins-Medium',
+                                            fontSize: 14,
+                                            color: Color(hexColor('#5CC4B8')),
+                                          ),
+                                        ),
+                                        key: Key('destinoKeyValue'),
+                                        onChanged: (value) {
+                                          setState(() {
+                                            destinatarioQueja = value;
+                                          });
+                                        },
+                                        validators: [
+                                          FormBuilderValidators.required(
+                                              errorText: 'Campo Obligatorio')
+                                        ],
+                                        items: [
+                                          'Aplicación',
+                                          'Movilidad',
+                                          'Servicio'
+                                        ]
+                                            .map((destinatario) =>
+                                                DropdownMenuItem(
+                                                    value: destinatario,
+                                                    child:
+                                                        Text("$destinatario")))
+                                            .toList(),
+                                        allowClear: true,
+                                      ),
+                                    ),
+//CONDICIONAL APP
+                                    ConditionalBuilder(
+                                      condition:
+                                          destinatarioQueja == 'Aplicación',
+                                      builder: (context) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(14.0),
+                                          child: FormBuilderDropdown(
+                                            attribute: "motivoApp",
+                                            decoration: InputDecoration(
+                                              labelText: "Motivo de su queja",
+                                              labelStyle: TextStyle(
+                                                fontFamily: 'Poppins-Medium',
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                    Color(hexColor('#3A4A64')),
+                                              ),
+                                            ),
+                                            style: TextStyle(
+                                              fontFamily: 'Poppins-Medium',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                              color: Color(hexColor('#5CC4B8')),
+                                            ),
+                                            // initialValue: 'Male',
+                                            hint: Text(
+                                              '¿Seleccione el motivo de su queja?',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins-Medium',
+                                                fontSize: 12,
+                                                color:
+                                                    Color(hexColor('#5CC4B8')),
+                                              ),
+                                            ),
+                                            validators: [
+                                              FormBuilderValidators.required(
+                                                  errorText:
+                                                      'Campo Obligatorio')
+                                            ],
+                                            items: [
+                                              'a) La app no es intuitiva/funcional',
+                                              'b) La app se vuelve lenta/dejo de funcionar',
+                                            ]
+                                                .map((motivo) =>
+                                                    DropdownMenuItem(
+                                                        value: motivo,
+                                                        child: Text("$motivo")))
+                                                .toList(),
+                                            allowClear: true,
+                                          ),
+                                        );
+                                      },
+                                    ),
+
+                                    // CONDICONAL MOVILIDAD
+                                    ConditionalBuilder(
+                                      condition:
+                                          destinatarioQueja == 'Movilidad',
+                                      builder: (context) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(14.0),
+                                          child: FormBuilderDropdown(
+                                            attribute: "motivoMovilidad",
+                                            decoration: InputDecoration(
+                                              labelText: "Motivo de su queja",
+                                              labelStyle: TextStyle(
+                                                fontFamily: 'Poppins-Medium',
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                    Color(hexColor('#3A4A64')),
+                                              ),
+                                            ),
+                                            style: TextStyle(
+                                              fontFamily: 'Poppins-Medium',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                              color: Color(hexColor('#5CC4B8')),
+                                            ),
+                                            // initialValue: 'Male',
+                                            hint: Text(
+                                              '¿Seleccione el motivo de su queja?',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins-Medium',
+                                                fontSize: 12,
+                                                color:
+                                                    Color(hexColor('#5CC4B8')),
+                                              ),
+                                            ),
+                                            validators: [
+                                              FormBuilderValidators.required(
+                                                  errorText:
+                                                      'Campo Obligatorio')
+                                            ],
+                                            items: [
+                                              'a) El recorrido llega fuera de los horarios establecidos',
+                                              'b) Estado inapropiado conductor/vehículo',
+                                            ]
+                                                .map((motivo) =>
+                                                    DropdownMenuItem(
+                                                        value: motivo,
+                                                        child: Text("$motivo")))
+                                                .toList(),
+                                            allowClear: true,
+                                          ),
+                                        );
+                                      },
+                                    ),
+
+                                    // CONDICONAL SERVICIO
+                                    ConditionalBuilder(
+                                      condition:
+                                          destinatarioQueja == 'Servicio',
+                                      builder: (context) {
+                                        return Padding(
+                                          padding: const EdgeInsets.all(14.0),
+                                          child: FormBuilderDropdown(
+                                            attribute: "motivoServicio",
+                                            decoration: InputDecoration(
+                                              labelText: "Motivo de su queja",
+                                              labelStyle: TextStyle(
+                                                fontFamily: 'Poppins-Medium',
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 18,
+                                                color:
+                                                    Color(hexColor('#3A4A64')),
+                                              ),
+                                            ),
+                                            style: TextStyle(
+                                              fontFamily: 'Poppins-Medium',
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 14,
+                                              color: Color(hexColor('#5CC4B8')),
+                                            ),
+                                            // initialValue: 'Male',
+                                            hint: Text(
+                                              '¿Seleccione el motivo de su queja?',
+                                              style: TextStyle(
+                                                fontFamily: 'Poppins-Medium',
+                                                fontSize: 12,
+                                                color:
+                                                    Color(hexColor('#5CC4B8')),
+                                              ),
+                                            ),
+                                            validators: [
+                                              FormBuilderValidators.required(
+                                                  errorText:
+                                                      'Campo Obligatorio')
+                                            ],
+                                            items: [
+                                              'a) Conductor/monitor irresponsable e irrespetuoso',
+                                              'b) Mi hijo/a tuvo algún accidente en el recorrido ',
+                                              'c) Coordinador de la unidad educativa irresponsable e irrespetuoso',
+                                            ]
+                                                .map((motivo) =>
+                                                    DropdownMenuItem(
+                                                        value: motivo,
+                                                        child: Text("$motivo")))
+                                                .toList(),
+                                            allowClear: true,
+                                          ),
+                                        );
+                                      },
+                                    ),
+
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: FormBuilderTextField(
+                                        attribute: "detalle",
+                                        decoration: InputDecoration(
+                                            border: OutlineInputBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20)),
+                                            labelText: "Detalle su queja",
+                                            labelStyle: TextStyle(
+                                                fontSize: 14,
+                                                color:
+                                                    Color(hexColor('#3A4A64'))),
+                                            helperStyle: TextStyle(
+                                                fontSize: 12,
+                                                color:
+                                                    Color(hexColor('#5CC4B8'))),
+                                            hintText:
+                                                'Ingrese el detalle de su queja'),
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            color: Color(hexColor('#5CC4B8'))),
+                                        validators: [
+                                          FormBuilderValidators.required(
+                                            errorText: 'Requerido',
+                                          ),
+                                          FormBuilderValidators.maxLength(50,
+                                              errorText: 'Máximo 50 caracteres')
+                                        ],
+                                      ),
                                     ),
                                     SizedBox(
                                       height: 20,
@@ -262,27 +404,29 @@ class _QuejasState extends State<Quejas>
                                                           'Su queja ha sido enviada con éxito',
                                                       //btnCancelOnPress: () {},
                                                       btnOkOnPress: () {
-                                                        Navigator.pushNamed(
-                                                            context, '/');
+                                                        Navigator
+                                                            .popAndPushNamed(
+                                                                context,
+                                                                'homePadres');
                                                       }).show();
                                                 } else {
                                                   print('campos por validar');
                                                   AwesomeDialog(
-                                                      btnOkColor: Color(
-                                                          hexColor('#E86A87')),
-                                                      context: context,
-                                                      dialogType:
-                                                          DialogType.ERROR,
-                                                      animType:
-                                                          AnimType.TOPSLIDE,
-                                                      tittle:
-                                                          'Error de Registro ',
-                                                      desc:
-                                                          'Revise campos obligatorios',
-                                                      //btnCancelOnPress: () {},
-                                                      btnOkOnPress: () {
-                                                        
-                                                      }).show();
+                                                          btnOkColor: Color(
+                                                              hexColor(
+                                                                  '#E86A87')),
+                                                          context: context,
+                                                          dialogType:
+                                                              DialogType.ERROR,
+                                                          animType:
+                                                              AnimType.TOPSLIDE,
+                                                          tittle:
+                                                              'Error de Registro ',
+                                                          desc:
+                                                              'Revise campos obligatorios',
+                                                          //btnCancelOnPress: () {},
+                                                          btnOkOnPress: () {})
+                                                      .show();
                                                 }
                                                 /*     var user =
                                                     Provider.of<LoginState>(
@@ -343,8 +487,8 @@ class _QuejasState extends State<Quejas>
                                                 ],
                                               ),
                                               onPressed: () {
-                                                Navigator.pushNamed(
-                                                    context, '/');
+                                                Navigator.popAndPushNamed(
+                                                    context, 'homePadres');
                                                 //_fase1Key.currentState.reset();
                                               },
                                             ),

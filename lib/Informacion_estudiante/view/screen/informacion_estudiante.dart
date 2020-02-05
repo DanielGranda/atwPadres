@@ -36,6 +36,7 @@ class _InformacionEstudiantesState extends State<InformacionEstudiantes>
           Expanded(
             child: Container(
               child: RubberBottomSheet(
+                 onTap: () {},
                 lowerLayer: _getLowerLayer(),
                 upperLayer: _getUpperLayer(),
                 animationController: _controller,

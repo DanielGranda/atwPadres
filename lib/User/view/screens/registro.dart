@@ -6,9 +6,7 @@ import 'package:padres/User/view/widgets/boton_registro.dart';
 import 'package:padres/User/view/widgets/cabecera_registro.dart';
 import 'package:padres/User/view/widgets/fondoRegistro.dart';
 import 'package:padres/User/view/widgets/formulario_registro.dart';
-import 'package:padres/User/view/widgets/informacion_service.dart';
 import 'package:padres/User/view/widgets/pie_registro.dart';
-import 'package:padres/User/view/widgets/redes_sociales_login.dart';
 
 
 class RegistroAtwPadres extends StatefulWidget {
@@ -45,7 +43,7 @@ class _RegistroAtwPadresState extends State<RegistroAtwPadres> {
                       ),
                       CabeceraRegistro(),
                       FormularioRegistro(
-                        auth: Auth(),
+                        auth: AuthServiceFirebaseApi(),
                         registroPadresKey: _registroPadresKey,
                       ),
                       SizedBox(
@@ -57,9 +55,9 @@ class _RegistroAtwPadresState extends State<RegistroAtwPadres> {
                           BotonRegistro
                           (
                             registroPadresKey: _registroPadresKey),
-                          Expanded(
-                            child: Informacion(auth: Auth()),
-                          ),
+                 /*          Expanded(
+                            child: Informacion(auth: AuthServiceFirebaseApi()),
+                          ), */
                         ],
                       ),
                       SizedBox(
@@ -70,7 +68,7 @@ class _RegistroAtwPadresState extends State<RegistroAtwPadres> {
                        SizedBox(
                         height: 30,
                       ),
-                      RedesSocialesLogin(auth: Auth(),),
+                      //RedesSocialesLogin(auth: AuthServiceFirebaseApi(),),
                       SizedBox(
                         height: 200,
                       ),
