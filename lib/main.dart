@@ -1,17 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:generic_bloc_provider/generic_bloc_provider.dart';
-import 'package:padres/User/bloc/bloc_user.dart';
+import 'package:padres/1 User/bloc/bloc_user.dart';
 import 'package:padres/prueba.dart';
 
-import 'Cancelar_trayecto_estudiante/view/screen/cancelar_trayecto_estudiante.dart';
-import 'Perfil_usuario/view/screens/perfil_user.dart';
+import '7 Cancelar_trayecto_estudiante/view/screen/cancelar_trayecto_estudiante.dart';
+
+import '8 Perfil_usuario/view/screens/perfil_user.dart';
 import 'Permitions/permitionGpsUI.dart';
-import 'User/view/screens/ingreso.dart';
-import 'User/view/screens/landing_page.dart';
-import 'User/view/screens/registro.dart';
+import '1 User/view/screens/ingreso.dart';
+import '1 User/view/screens/landing_page.dart';
+import '1 User/view/screens/registro.dart';
 import 'Utils/hexaColor.dart';
-import 'package:padres/Home_maps/view/screens/homeAtwPadres.dart';
+import 'package:padres/2 Home_maps/view/screens/homeAtwPadres.dart';
 
 void main() => runApp(MyApp());
 
